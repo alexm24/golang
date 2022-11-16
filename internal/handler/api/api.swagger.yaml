@@ -1,0 +1,844 @@
+openapi: 3.0.2
+info:
+  version: "1.0.0"
+  title: VP
+  description: Api for video platform
+  contact:
+    name: vp
+    url: http://localhost
+    email: vp.ru
+servers:
+  - url: http://localhost
+tags:
+  - name: admin
+    description: Admin
+  - name: broadcasts
+    description: Broadcasts
+  - name: messages
+    description: Messages
+  - name: stream
+    description: Stream
+  - name: live
+    description: Live
+  - name: zoom
+    description: Zoom
+  - name: images
+    description: Images
+  - name: participants
+    description: Participants
+
+paths:
+  /admin:
+    post:
+      tags:
+        - admin
+      summary: Sends a request with a user
+      description: Sends a request with a user
+      operationId: checkAdmin
+      requestBody:
+        description: Object with user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SUsername'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SAdmin'
+
+  /token:
+    post:
+      tags:
+        - admin
+      summary: Get token
+      description: Get token
+      operationId: postUserGetToken
+      requestBody:
+        description: Object user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SUsername'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SToken'
+
+  /broadcasts:
+    get:
+      tags:
+        - broadcasts
+      summary: List of upcoming or current broadcasts
+      operationId: getBroadcasts
+      description: List of upcoming or current broadcasts
+      responses:
+        200:
+          description:  Get array broadcast
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/SIdentifier'
+                    - $ref: '#/components/schemas/SBroadcast'
+                    - $ref: '#/components/schemas/SPreviewUrl'
+                    - $ref: '#/components/schemas/SLifeCycle'
+                    - $ref: '#/components/schemas/SStartTime'
+    post:
+      tags:
+        - broadcasts
+      summary: Adds a new broadcast
+      description: Adds a new broadcast
+      operationId: postBroadcasts
+      requestBody:
+        description: Translation object to be added
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/SBroadcast'
+                - $ref: '#/components/schemas/SStartTime'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SIdentifier'
+                  - $ref: '#/components/schemas/SBroadcast'
+                  - $ref: '#/components/schemas/SPreviewUrl'
+                  - $ref: '#/components/schemas/SLifeCycle'
+                  - $ref: '#/components/schemas/SStartTime'
+    put:
+      tags:
+        - broadcasts
+      summary: Updates the broadcast
+      description: Updates the broadcast
+      operationId: putBroadcast
+      requestBody:
+        description: Translation object
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/SIdentifier'
+                - $ref: '#/components/schemas/SBroadcast'
+                - $ref: '#/components/schemas/SStartTime'
+        required: true
+      responses:
+        200:
+          description: Broadcast has been updated
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SIdentifier'
+                  - $ref: '#/components/schemas/SBroadcast'
+                  - $ref: '#/components/schemas/SPreviewUrl'
+                  - $ref: '#/components/schemas/SLifeCycle'
+                  - $ref: '#/components/schemas/SStartTime'
+
+  /broadcasts/{id}:
+    get:
+      tags:
+        - broadcasts
+      summary: Get broadcast by id
+      description: Get broadcast by id
+      operationId: getBroadcastById
+      parameters:
+        - name: id
+          in: path
+          description: uuid broadcast
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Object broadcast by id
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SIdentifier'
+                  - $ref: '#/components/schemas/SBroadcast'
+                  - $ref: '#/components/schemas/SPreviewUrl'
+                  - $ref: '#/components/schemas/SLifeCycle'
+                  - $ref: '#/components/schemas/SStartTime'
+    delete:
+      tags:
+        - broadcasts
+      summary: Delete broadcast by id
+      operationId: deleteBroadcast
+      parameters:
+        - name: id
+          in: path
+          description: Delete broadcast by id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Broadcast has been deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SIdentifier'
+
+  /broadcasts/arch:
+    post:
+      tags:
+        - broadcasts
+      summary: Returns a list of archived broadcasts
+      description: Sends a user, gets a list of archived broadcasts
+      operationId: postUserGetBroadcastArch
+      requestBody:
+        description: An object. Username
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SUsername'
+        required: true
+      responses:
+        200:
+          description: Returns a list of archived broadcasts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/SIdentifier'
+                    - $ref: '#/components/schemas/SBroadcast'
+                    - $ref: '#/components/schemas/SPreviewUrl'
+                    - $ref: '#/components/schemas/SStartTime'
+
+  /messages/{channel}:
+    get:
+      tags:
+        -  messages
+      summary: Get messages
+      description: Get Array messages by channel
+      operationId: getMsgByChannel
+      parameters:
+        - name: channel
+          in: path
+          description: channel translation
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/SIdentifier'
+                    - $ref: '#/components/schemas/SUsername'
+                    - $ref: '#/components/schemas/SFullname'
+                    - $ref: '#/components/schemas/SMessage'
+    post:
+      tags:
+        -  messages
+      summary: Send message
+      description: Send a message by channel
+      operationId: postMsgByChannel
+      parameters:
+        - name: channel
+          in: path
+          description: channel translation
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: An object. message
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/SUsername'
+                - $ref: '#/components/schemas/SFullname'
+                - $ref: '#/components/schemas/SMessage'
+        required: true
+      responses:
+        200:
+          description: returns message
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SIdentifier'
+                  - $ref: '#/components/schemas/SUsername'
+                  - $ref: '#/components/schemas/SFullname'
+                  - $ref: '#/components/schemas/SMessage'
+
+  /messages/{channel}/reaction:
+    post:
+      tags:
+        -  messages
+      summary: Send reaction for message
+      description: Send reaction for message to the broadcast by channel
+      operationId: postReactionMsg
+      parameters:
+        - name: channel
+          in: path
+          description: channel translation
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: An object. Like
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/SIdentifier'
+                - $ref: '#/components/schemas/SType'
+                - $ref: '#/components/schemas/SUsername'
+        required: true
+      responses:
+        200:
+          description: ok
+    patch:
+      tags:
+        -  messages
+      summary: Delete existing reaction in message
+      description: Delete existing reaction in message to the broadcast by channel
+      operationId: patchReactionMsg
+      parameters:
+        - name: channel
+          in: path
+          description: channel translation
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: An object. Like
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/SIdentifier'
+                - $ref: '#/components/schemas/SUsername'
+        required: true
+      responses:
+        200:
+          description: ok
+
+  /participants/{channel}:
+    post:
+      tags:
+        - participants
+      summary: Send information about the user
+      description: Send information about the user who entered the stream
+      operationId: postParticipantsByChannel
+      parameters:
+        - name: channel
+          in: path
+          description: channel
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: An object. User info
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/SUsername'
+                - $ref: '#/components/schemas/SFullname'
+                - $ref: '#/components/schemas/SEMail'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+    get:
+      tags:
+        -  participants
+      summary: Stream members
+      description: Stream members
+      operationId: getParticipantsByChannel
+      parameters:
+        - name: channel
+          in: path
+          description: channel
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Returns an array of stream members
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/SIdentifier'
+                    - $ref: '#/components/schemas/SUsername'
+                    - $ref: '#/components/schemas/SFullname'
+                    - $ref: '#/components/schemas/SEMail'
+
+  /stream:
+    post:
+      tags:
+        - stream
+      summary: Added stream
+      description: Added stream
+      operationId: postStream
+      requestBody:
+        description: Object username
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SUsername'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SIdentifier'
+                  - $ref: '#/components/schemas/SUsername'
+        400:
+          description: Invalid status value
+          content: {}
+    put:
+      tags:
+        - stream
+      summary: Update stream field description
+      description: Update stream field description
+      operationId: putStream
+      requestBody:
+        description: Object stream
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/SUsername'
+                - $ref: '#/components/schemas/SDescription'
+
+        required: true
+      responses:
+        200:
+          description: Update stream field description
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SIdentifier'
+                  - $ref: '#/components/schemas/SUsername'
+                  - $ref: '#/components/schemas/SDescription'
+        400:
+          description: Invalid user supplied
+          content: {}
+        404:
+          description: Stream not found
+          content: {}
+
+  /stream/{username}:
+    get:
+      tags:
+        - stream
+      summary: Get stream info by username
+      description: Получает трансляцию по id
+      operationId: getStreamByUsername
+      parameters:
+        - name: username
+          in: path
+          description: username
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Object stream by Id
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SIdentifier'
+                  - $ref: '#/components/schemas/SUsername'
+                  - $ref: '#/components/schemas/SDescription'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Stream not found
+          content: {}
+
+  /stream/chat/{channel}:
+    delete:
+      tags:
+        - stream
+      summary: Clear chat history
+      operationId: deleteStreamChat
+      parameters:
+        - name: channel
+          in: path
+          description: Clear chat history by channel
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Deleted chat stream
+
+  /live:
+    get:
+      tags:
+        - live
+      summary: Get all live
+      operationId: getLive
+      description: Get all live
+      responses:
+        200:
+          description: Get array all live
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/SIdentifier'
+                    - $ref: '#/components/schemas/SStreamUrl'
+                    - $ref: '#/components/schemas/SPlace'
+                    - $ref: '#/components/schemas/SDescription'
+
+  /live/{id}:
+    get:
+      tags:
+        - live
+      summary: Get live by id
+      description: Get live by id
+      operationId: getLiveById
+      parameters:
+        - name: id
+          in: path
+          description: id live
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Get live by id
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SIdentifier'
+                  - $ref: '#/components/schemas/SDescription'
+                  - $ref: '#/components/schemas/SPlace'
+                  - $ref: '#/components/schemas/SStreamUrl'
+        404:
+          description: Not found
+          content: {}
+
+  /zoom:
+    post:
+      tags:
+        - zoom
+      summary: Hook send zoom service
+      description: Hook send zoom service
+      operationId: postZoom
+      requestBody:
+        description: Hook send zoom service
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/SAnyValue'
+            example: {}
+        required: true
+      responses:
+        200:
+          description: Created
+
+  /zoom/{id}:
+    get:
+      tags:
+        - zoom
+      summary: Get zoom by id
+      description: Get zoom by id
+      operationId: getZoomById
+      parameters:
+        - name: id
+          in: path
+          description: id zoom
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Get zoom by id
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SIdentifier'
+                  - $ref: '#/components/schemas/SStartTime'
+                  - $ref: '#/components/schemas/SZoom'
+                  - $ref: '#/components/schemas/SJson'
+
+  /zoom/email/{email}:
+    get:
+      tags:
+        - zoom
+      summary: Get array zoom conference by email
+      description: Get array zoom conference by email
+      operationId: getZoomByEmail
+      parameters:
+        - name: email
+          in: path
+          description: email zoom
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Get array zoom conference by email
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/SIdentifier'
+                    - $ref: '#/components/schemas/SStartTime'
+                    - $ref: '#/components/schemas/SZoom'
+
+  /images:
+    post:
+      tags:
+        - images
+      summary: Post image
+      description: Post image
+      operationId: postImage
+      requestBody:
+        description: Object image
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SFile'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SIdentifier'
+                  - $ref: '#/components/schemas/SPreviewUrl'
+
+  /images/{id}:
+    get:
+      tags:
+        - images
+      summary: Get image by id
+      description: Get image by id
+      operationId: getImageById
+      parameters:
+        - name: id
+          in: path
+          description: Broadcast id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: ok
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+    put:
+      tags:
+        - images
+      summary: Set null by id
+      description: Set null by id
+      operationId: putImageById
+      parameters:
+        - name: id
+          in: path
+          description: Set null image by id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SIdentifier'
+
+components:
+  schemas:
+
+    SAnyValue: {}
+
+    SIdentifier:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+
+    SBroadcast:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        stream_key:
+          type: string
+        owner:
+          type: string
+
+    SLifeCycle:
+      type: object
+      properties:
+        life:
+          type: string
+
+    SUsername:
+      type: object
+      properties:
+        username:
+          type: string
+
+    SFullname:
+      type: object
+      properties:
+        fullname:
+          type: string
+
+    SEMail:
+      type: object
+      properties:
+        email:
+          type: string
+
+    SDescription:
+      type: object
+      properties:
+        description:
+          type: string
+
+    SPreviewUrl:
+      type: object
+      properties:
+        preview_url:
+          type: string
+
+    SStreamUrl:
+      type: object
+      properties:
+        stream_url:
+          type: string
+
+    SPlace:
+      type: object
+      properties:
+        place:
+          type: string
+
+    SMessage:
+      type: object
+      properties:
+        avatar:
+          type: string
+        text:
+          type: string
+        time:
+          type: string
+          format: date-time
+        reactions:
+          type: string
+        is_question:
+          type: boolean
+          x-oapi-codegen-extra-tags:
+            db: is_question
+        is_anon:
+          type: boolean
+          x-oapi-codegen-extra-tags:
+            db: is_anon
+
+    SType:
+      type: object
+      properties:
+        type:
+          type: string
+
+    SAdmin:
+      type: object
+      properties:
+        is_admin:
+          type: boolean
+
+    SToken:
+      type: object
+      properties:
+        token:
+          type: string
+        exp:
+          type: string
+          format: date-time
+
+    SFile:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+
+    SStartTime:
+      type: object
+      properties:
+        start_time:
+          type: string
+          format: date-time
+          x-oapi-codegen-extra-tags:
+            db: start_time
+
+    SJson:
+      type: object
+      properties:
+        json:
+          type: string
+
+    SZoom:
+      type: object
+      properties:
+        topic:
+          type: string
+        recording_count:
+          type: integer
+          format: int64
+          x-oapi-codegen-extra-tags:
+            db: recording_count

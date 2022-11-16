@@ -1,0 +1,11 @@
+DROP TABLE participants;
+DROP TABLE messages;
+DROP TABLE images;
+DROP TABLE files;
+DROP TABLE broadcasts;
+DROP TABLE canteens;
+DROP TABLE live;
+DROP TABLE users;
+DROP TYPE lifecycle;
+DROP TABLE stream;
+DROP TABLE zoom;

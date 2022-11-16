@@ -1,0 +1,14 @@
+http_server_config:
+  port: "4000"
+  path: "api/v1"
+
+centrifugo_config:
+  url: "https://chat.ru/api"
+  token_hmac_secret: "q2211716-3db8-49f1-9652-5d37667aedd2"
+  api_key: "z6c686ef-3f20-49a6-a410-20ebdb1886b8"
+
+redis_config:
+  url: "chat.ru"
+  port: "6379"
+
+db_config: "host=localhost port=5432 user=postgres dbname=postgres password=qwerty sslmode=disable"

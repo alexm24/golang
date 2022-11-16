@@ -1,0 +1,55 @@
+package models
+
+const (
+	ErrServiceGetLive              = "service failure GetLive() in /live route"
+	ErrServiceGetLiveById          = "service failure GetLiveById() in /live{id} route"
+	ErrServiceGetParticipants      = "service failure GetParticipants() in /participants/{channel} route"
+	ErrServiceCreateParticipant    = "service failure CreateParticipant() in /participants/{channel} route"
+	ErrServiceErrCreateMsg         = "service failure CreateMsg() in /messages{channel} route"
+	ErrServiceGetMessageByChannel  = "service failure GetMessageByChannel() in /messages/{channel} route"
+	ErrServiceGetZoomById          = "service failure GetZoomById() in /zoom/{id} route"
+	ErrServiceGetZoomByEmail       = "service failure GetZoomByEmail() in /zoom/email/{email} route"
+	ErrServiceClearChat            = "service failure ClearChat() in /stream/chat/{channel} route"
+	ErrServiceCreateBroadcast      = "service failure CreateBroadcast() in /broadcasts route"
+	ErrServiceCreateStream         = "service failure CreateStream() in /stream route"
+	ErrServiceGetStream            = "service failure GetStream() in /stream route"
+	ErrServiceChangeDescByUsername = "service failure ChangeDescByUsername() in /stream route"
+	ErrServiceCheckAdminUser       = "service failure CheckAdminUser() in /admin route"
+	ErrServiceGetToken             = "service failure GetToken() in /token route"
+	ErrServiceGetBroadcasts        = "service failure GetBroadcasts() in /broadcasts route"
+	ErrServiceGetBroadcastById     = "service failure GetBroadcastById() in /broadcasts/{id} route"
+	ErrServiceGetArchBroadcasts    = "service failure GetArchBroadcasts() in /broadcasts/arch route"
+	ErrServiceDeleteBroadcast      = "service failure DeleteBroadcast() in /broadcasts route"
+	ErrServiceChangeBroadcast      = "service failure ChangeBroadcast() in /broadcasts route"
+	ErrServiceGetImageById         = "service failure GetImageById() in /images route"
+	ErrServiceDelImageById         = "service failure DelImageById() in /images route"
+	ErrServiceCreateImage          = "service failure CreateImage() in /images route"
+	ErrServiceCreateReaction       = "service failure CreateReaction() in /messages/{channel}/reaction"
+	ErrServiceDeleteReaction       = "service failure DeleteReaction() in /messages/{channel}/reaction"
+)
+
+const (
+	MsgNoSuchFile       = "No such file"
+	MsgInvalidFileType  = "Invalid file type"
+	MsgInvalidJson      = "Invalid JSON data format"
+	MsgFullnameEmpty    = "fullname field is empty"
+	MsgNameEmpty        = "name field is empty"
+	MsgUsernameEmpty    = "username empty"
+	MsgTextEmpty        = "text field is empty"
+	MsgAvatarEmpty      = "avatar field is empty"
+	MsgTimeEmpty        = "time field is empty"
+	MsgIsAnonEmpty      = "is_anon field is empty"
+	MsgIsQuestionEmpty  = "is_question field is empty"
+	MsgEmailEmpty       = "email field is empty"
+	MsgDescriptionEmpty = "description field is empty"
+	MsgOwnerEmpty       = "owner field is empty"
+	MsgStreamKeyEmpty   = "stream_key field is empty"
+	MsgStartTimeEmpty   = "start_time field is empty"
+	MsgIdEmpty          = "id field is empty"
+	MsgTypeEmpty        = "type field is empty"
+)
+
+const (
+	ActionChatClear     = "ACTION_CHAT_CLEAR"
+	ActionChatReactions = "ACTION_CHAT_REACTIONS"
+)
