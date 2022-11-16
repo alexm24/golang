@@ -1,6 +1,6 @@
 # Rest api for Video Platform
 
-##Swagger. OpenAPI 3.0
+## Swagger. OpenAPI 3.0
 - https://github.com/alexm24/golang/blob/main/internal/handler/api/api.swagger.yaml
 
 ## Postgres
