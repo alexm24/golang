@@ -8,7 +8,7 @@
 #### create init database
 - migrate create -ext sql -dir ./migrations -seq init
 
-#### create migration. [golang-migrate/migrate](https://github.com/golang-migrate/migrate)
+#### [create migration.](https://github.com/golang-migrate/migrate)
 - migrate -path ./migrations -database "postgres://postgres:qwerty@localhost:5432/postgres?sslmode=disable" up
 
 ## Redis
